@@ -44,7 +44,7 @@ setInterval(()=>{
 
 repeat++;
 
-if(repeat > 10){
+if(repeat > 12){
 
 repeat = 1;
 chantIndex++;
