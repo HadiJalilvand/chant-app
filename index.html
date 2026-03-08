@@ -52,30 +52,15 @@ width:0%;
 transition:width 4s linear;
 }
 
-.fullscreenBtn{
-position:fixed;
-top:10px;
-right:10px;
-background:#222;
-color:white;
-border:none;
-padding:10px 14px;
-font-size:14px;
-border-radius:6px;
-}
-
 @keyframes scrollUp{
-
 0%{
 transform:translateY(50px);
 opacity:0;
 }
-
 100%{
 transform:translateY(0);
 opacity:1;
 }
-
 }
 
 </style>
@@ -83,19 +68,18 @@ opacity:1;
 
 <body>
 
-<!-- <button class="fullscreenBtn" onclick="goFullscreen()">Fullscreen</button> -->
-
 <div class="container">
-
-<div id="chant"></div>
-<div id="repeat"></div>
-
+    <div id="chant"></div>
+    <div id="repeat"></div>
 </div>
 
 <div class="progress" id="progress"></div>
 
 <script>
 
+// ------------------------------
+// SOCKET.IO
+// ------------------------------
 const socket = io();
 
 const chantEl = document.getElementById("chant");
@@ -104,30 +88,45 @@ const progress = document.getElementById("progress");
 
 socket.on("chantUpdate",(data)=>{
 
-chantEl.style.animation="none";
-void chantEl.offsetWidth;
-chantEl.style.animation="scrollUp 4s linear";
+    chantEl.style.animation="none";
+    void chantEl.offsetWidth;
+    chantEl.style.animation="scrollUp 4s linear";
 
-chantEl.innerText = data.chant;
+    chantEl.innerText = data.chant;
 
-repeatEl.innerText =
-"Repeat " + data.repeat + " / 10";
+    repeatEl.innerText = "Repeat " + data.repeat + " / 10";
 
-progress.style.width="0%";
+    progress.style.width="0%";
 
-setTimeout(()=>{
-progress.style.width="100%";
-},50);
+    setTimeout(()=>{
+        progress.style.width="100%";
+    },50);
 
 });
 
-function goFullscreen(){
 
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen();
+// ------------------------------
+// SCREEN WAKE LOCK (keeps phone awake)
+// ------------------------------
+let wakeLock = null;
+
+async function keepScreenOn() {
+    try {
+        wakeLock = await navigator.wakeLock.request("screen");
+        console.log("Screen Wake Lock activated");
+
+        wakeLock.addEventListener("release", () => {
+            console.log("Wake Lock released — trying to re-acquire");
+        });
+    } catch (err) {
+        console.error("Wake Lock error:", err);
+    }
 }
 
-}
+// Wake lock must be triggered after a user gesture
+document.addEventListener("click", () => {
+    keepScreenOn();
+}, { once: true });
 
 </script>
 
