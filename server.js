@@ -57,7 +57,7 @@ chantIndex = 0;
 
 broadcastState();
 
-},5000);
+},5500);
 
 io.on("connection",(socket)=>{
 
