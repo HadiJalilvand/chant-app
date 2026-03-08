@@ -21,7 +21,7 @@ const chants = [
 "Our revolution leader — King Reza Pahlavi",
 "جاوید - شاه",
 "پاینده - ایران",
-"این آخرین نبرد — پهلوی بر میگرده",
+"این آخرین نبرده — پهلوی بر میگرده",
 "زنده و جاوید باد سلسله پهلوی",
 "داس، چکش، عمامه — پنجاه و هفت تمامه",
 "Trump, BB, King Reza Pahlavi",
@@ -44,7 +44,7 @@ setInterval(()=>{
 
 repeat++;
 
-if(repeat > 12){
+if(repeat > 10){
 
 repeat = 1;
 chantIndex++;
